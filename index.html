@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WorldMetrics — Live World Statistics</title>
+
+    <meta name="description"
+          content="WorldMetrics provides global statistics, population data, internet users, births, deaths and more.">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #1d2733;
+        }
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 18px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #1677ff;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #344054;
+            margin-left: 25px;
+            font-size: 15px;
+        }
+
+        nav a:hover {
+            color: #1677ff;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 65px 20px 35px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            color: #667085;
+            font-size: 17px;
+        }
+
+        .main-stat {
+            max-width: 900px;
+            margin: 20px auto 45px;
+            background: white;
+            border-radius: 18px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.07);
+        }
+
+        .main-stat h2 {
+            font-size: 17px;
+            color: #667085;
+            margin-bottom: 12px;
+        }
+
+        #population {
+            font-size: 48px;
+            font-weight: bold;
+            color: #1677ff;
+            letter-spacing: 1px;
+        }
+
+        .updated {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #98a2b3;
+        }
+
+        .stats {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 20px 60px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .card .icon {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            font-size: 15px;
+            color: #667085;
+            margin-bottom: 8px;
+        }
+
+        .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #101828;
+        }
+
+        footer {
+            background: #111827;
+            color: #d1d5db;
+            text-align: center;
+            padding: 25px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 750px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            #population {
+                font-size: 35px;
+            }
+
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">🌍 WorldMetrics</div>
+
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">World</a>
+        <a href="#">Countries</a>
+        <a href="#">About</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>World Statistics</h1>
+    <p>Explore numbers that describe our changing world.</p>
+</section>
+
+<section class="main-stat">
+    <h2>🌎 Estimated World Population</h2>
+
+    <div id="population">
+        8,300,000,000
+    </div>
+
+    <div class="updated">
+        Estimated counter • Updated continuously
+    </div>
+</section>
+
+<section class="stats">
+
+    <div class="card">
+        <div class="icon">👶</div>
+        <h3>Births Today</h3>
+        <div class="number" id="births">0</div>
+    </div>
+
+    <div class="card">
+        <div class="icon">⚰️</div>
+        <h3>Deaths Today</h3>
+        <div class="number" id="deaths">0</div>
+    </div>
+
+    <div class="card">
+        <div class="icon">🌐</div>
+        <h3>Internet Users</h3>
+        <div class="number" id="internet">5,500,000,000</div>
+    </div>
+
+    <div class="card">
+        <div class="icon">📱</div>
+        <h3>Mobile Users</h3>
+        <div class="number">8,700,000,000</div>
+    </div>
+
+    <div class="card">
+        <div class="icon">🌳</div>
+        <h3>Forest Area</h3>
+        <div class="number">4.06 B ha</div>
+    </div>
+
+    <div class="card">
+        <div class="icon">💨</div>
+        <h3>CO₂ Emissions</h3>
+        <div class="number">36 B tonnes/year</div>
+    </div>
+
+</section>
+
+<footer>
+    © 2026 WorldMetrics • Independent global statistics project
+</footer>
+
+<script>
+
+    // Simple estimated counters for the prototype.
+    // These are demonstrations, not official live measurements.
+
+    let population = 8300000000;
+
+    function updatePopulation() {
+        population += 2;
+
+        document.getElementById("population")
+            .textContent = population.toLocaleString();
+    }
+
+    setInterval(updatePopulation, 1000);
+
+
+    // Daily demonstration counters
+
+    const startTime = new Date();
+    startTime.setHours(0, 0, 0, 0);
+
+    function updateDailyCounters() {
+
+        const now = new Date();
+
+        const secondsToday =
+            Math.floor((now - startTime) / 1000);
+
+        const births =
+            Math.floor(secondsToday * 4.3);
+
+        const deaths =
+            Math.floor(secondsToday * 1.8);
+
+        document.getElementById("births")
+            .textContent = births.toLocaleString();
+
+        document.getElementById("deaths")
+            .textContent = deaths.toLocaleString();
+    }
+
+    updateDailyCounters();
+
+    setInterval(updateDailyCounters, 1000);
+
+</script>
+
+</body>
+</html>
