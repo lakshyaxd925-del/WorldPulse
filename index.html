@@ -4,153 +4,460 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>WorldMetrics — Live World Statistics</title>
+    <title>WorldPulse — Global Statistics & World Data</title>
 
     <meta name="description"
-          content="WorldMetrics provides global statistics, population data, internet users, births, deaths and more.">
+          content="WorldPulse explores global population, internet usage, environment, countries and other worldwide statistics.">
+
+    <meta name="theme-color" content="#0b5cff">
 
     <style>
+        :root {
+            --primary: #0b5cff;
+            --primary-dark: #0847c7;
+            --text: #172033;
+            --muted: #667085;
+            --bg: #f5f7fb;
+            --card: #ffffff;
+            --border: #e7eaf0;
+            --success: #12b76a;
+            --shadow: 0 10px 35px rgba(16, 24, 40, 0.07);
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f7fb;
-            color: #1d2733;
+        html {
+            scroll-behavior: smooth;
         }
 
+        body {
+            font-family: Inter, Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        /* ================= HEADER ================= */
+
         header {
-            background: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 18px 7%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 16px 22px;
+
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            gap: 25px;
         }
 
         .logo {
-            font-size: 25px;
-            font-weight: bold;
-            color: #1677ff;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            font-size: 23px;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            font-size: 27px;
+        }
+
+        nav {
+            display: flex;
+            gap: 28px;
         }
 
         nav a {
+            color: #475467;
             text-decoration: none;
-            color: #344054;
-            margin-left: 25px;
-            font-size: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
         }
 
         nav a:hover {
-            color: #1677ff;
+            color: var(--primary);
         }
 
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            font-size: 12px;
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 0 4px rgba(18,183,106,0.12);
+        }
+
+        /* ================= HERO ================= */
+
         .hero {
+            max-width: 1100px;
+            margin: auto;
+            padding: 75px 22px 40px;
             text-align: center;
-            padding: 65px 20px 35px;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 7px 13px;
+            margin-bottom: 18px;
+
+            border-radius: 30px;
+            background: #eaf1ff;
+            color: var(--primary);
+
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
         }
 
         .hero h1 {
-            font-size: 42px;
-            margin-bottom: 12px;
+            font-size: clamp(38px, 6vw, 65px);
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
         }
 
         .hero p {
-            color: #667085;
+            max-width: 650px;
+            margin: auto;
+
+            color: var(--muted);
             font-size: 17px;
         }
 
-        .main-stat {
-            max-width: 900px;
-            margin: 20px auto 45px;
-            background: white;
-            border-radius: 18px;
-            padding: 35px;
+        /* ================= MAIN POPULATION ================= */
+
+        .population-box {
+            max-width: 950px;
+            margin: 10px auto 55px;
+            padding: 42px 25px;
+
+            background:
+                radial-gradient(circle at top right, rgba(11,92,255,0.12), transparent 40%),
+                white;
+
+            border: 1px solid var(--border);
+            border-radius: 24px;
+
+            box-shadow: var(--shadow);
             text-align: center;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.07);
         }
 
-        .main-stat h2 {
-            font-size: 17px;
-            color: #667085;
-            margin-bottom: 12px;
-        }
-
-        #population {
-            font-size: 48px;
-            font-weight: bold;
-            color: #1677ff;
+        .population-label {
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .updated {
-            margin-top: 10px;
-            font-size: 13px;
-            color: #98a2b3;
+        #population {
+            margin: 10px 0;
+
+            color: var(--primary);
+            font-size: clamp(38px, 7vw, 68px);
+            font-weight: 850;
+            letter-spacing: -2px;
         }
 
-        .stats {
-            max-width: 1100px;
+        .population-note {
+            color: #98a2b3;
+            font-size: 12px;
+        }
+
+        .live-time {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #667085;
+        }
+
+        /* ================= SECTION ================= */
+
+        .section {
+            max-width: 1150px;
             margin: auto;
-            padding: 0 20px 60px;
+            padding: 0 22px 65px;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+
+            margin-bottom: 22px;
+        }
+
+        .section-heading h2 {
+            font-size: 25px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* ================= STAT CARDS ================= */
+
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 18px;
         }
 
         .card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            position: relative;
+
+            padding: 24px;
+
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+
+            box-shadow: 0 5px 20px rgba(16,24,40,0.04);
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
         }
 
-        .card .icon {
-            font-size: 30px;
-            margin-bottom: 12px;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .icon {
+            width: 46px;
+            height: 46px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 13px;
+            background: #edf3ff;
+
+            font-size: 22px;
+        }
+
+        .arrow {
+            color: #98a2b3;
+            font-size: 18px;
         }
 
         .card h3 {
-            font-size: 15px;
-            color: #667085;
-            margin-bottom: 8px;
+            margin-top: 18px;
+            margin-bottom: 5px;
+
+            font-size: 14px;
+            color: var(--muted);
         }
 
         .number {
             font-size: 28px;
-            font-weight: bold;
-            color: #101828;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
+
+        .card-description {
+            margin-top: 8px;
+
+            font-size: 12px;
+            color: #98a2b3;
+        }
+
+        /* ================= CATEGORY ================= */
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .category {
+            padding: 20px;
+
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+
+            text-decoration: none;
+            color: var(--text);
+
+            transition: 0.2s;
+        }
+
+        .category:hover {
+            border-color: #b7cdfd;
+            transform: translateY(-3px);
+        }
+
+        .category-icon {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .category strong {
+            display: block;
+            font-size: 15px;
+        }
+
+        .category small {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* ================= DISCLAIMER ================= */
+
+        .notice {
+            max-width: 1150px;
+            margin: 0 auto 50px;
+            padding: 18px 22px;
+
+            background: #fff9eb;
+            border: 1px solid #f5dfaa;
+            border-radius: 14px;
+
+            color: #7a5b00;
+            font-size: 13px;
+        }
+
+        /* ================= FOOTER ================= */
 
         footer {
-            background: #111827;
-            color: #d1d5db;
-            text-align: center;
-            padding: 25px;
-            font-size: 14px;
+            background: #101828;
+            color: #cbd5e1;
+            padding: 40px 22px;
         }
 
-        @media (max-width: 750px) {
-            .stats {
-                grid-template-columns: 1fr;
-            }
+        .footer-inner {
+            max-width: 1150px;
+            margin: auto;
 
-            .hero h1 {
-                font-size: 32px;
-            }
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
 
-            #population {
-                font-size: 35px;
-            }
+        .footer-brand {
+            color: white;
+            font-size: 19px;
+            font-weight: 800;
+            margin-bottom: 7px;
+        }
+
+        footer p {
+            color: #98a2b3;
+            font-size: 12px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 850px) {
 
             nav {
                 display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+
+            .nav-container {
+                padding: 14px 17px;
+            }
+
+            .status {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 50px;
+            }
+
+            .stats-grid,
+            .categories {
+                grid-template-columns: 1fr;
+            }
+
+            .population-box {
+                margin-left: 17px;
+                margin-right: 17px;
+            }
+
+            .section-heading {
+                display: block;
+            }
+
+            .section-heading p {
+                margin-top: 5px;
+            }
+
+            .footer-inner {
+                display: block;
+            }
+
+            .footer-links {
+                margin-top: 20px;
             }
         }
     </style>
@@ -158,106 +465,346 @@
 
 <body>
 
-<header>
-    <div class="logo">🌍 WorldMetrics</div>
+<!-- ================= NAVIGATION ================= -->
 
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">World</a>
-        <a href="#">Countries</a>
-        <a href="#">About</a>
-    </nav>
+<header>
+    <div class="nav-container">
+
+        <a href="#" class="logo">
+            <span>🌍</span>
+            WorldPulse
+        </a>
+
+        <nav>
+            <a href="#">Home</a>
+            <a href="#statistics">Statistics</a>
+            <a href="#categories">Categories</a>
+            <a href="#about">About</a>
+        </nav>
+
+        <div class="status">
+            <span class="status-dot"></span>
+            Dashboard online
+        </div>
+
+    </div>
 </header>
 
+
+<!-- ================= HERO ================= -->
+
 <section class="hero">
-    <h1>World Statistics</h1>
-    <p>Explore numbers that describe our changing world.</p>
+
+    <div class="badge">
+        🌎 GLOBAL DATA DASHBOARD
+    </div>
+
+    <h1>
+        The world,<br>
+        <span>in numbers.</span>
+    </h1>
+
+    <p>
+        Explore population, technology, environment and
+        other statistics that help us understand our planet.
+    </p>
+
 </section>
 
-<section class="main-stat">
-    <h2>🌎 Estimated World Population</h2>
+
+<!-- ================= POPULATION ================= -->
+
+<section class="population-box">
+
+    <div class="population-label">
+        Estimated World Population
+    </div>
 
     <div id="population">
         8,300,000,000
     </div>
 
-    <div class="updated">
-        Estimated counter • Updated continuously
-    </div>
-</section>
-
-<section class="stats">
-
-    <div class="card">
-        <div class="icon">👶</div>
-        <h3>Births Today</h3>
-        <div class="number" id="births">0</div>
+    <div class="population-note">
+        Demonstration estimate — not an official live measurement
     </div>
 
-    <div class="card">
-        <div class="icon">⚰️</div>
-        <h3>Deaths Today</h3>
-        <div class="number" id="deaths">0</div>
-    </div>
-
-    <div class="card">
-        <div class="icon">🌐</div>
-        <h3>Internet Users</h3>
-        <div class="number" id="internet">5,500,000,000</div>
-    </div>
-
-    <div class="card">
-        <div class="icon">📱</div>
-        <h3>Mobile Users</h3>
-        <div class="number">8,700,000,000</div>
-    </div>
-
-    <div class="card">
-        <div class="icon">🌳</div>
-        <h3>Forest Area</h3>
-        <div class="number">4.06 B ha</div>
-    </div>
-
-    <div class="card">
-        <div class="icon">💨</div>
-        <h3>CO₂ Emissions</h3>
-        <div class="number">36 B tonnes/year</div>
+    <div class="live-time">
+        🕒 Local time: <span id="clock">--:--:--</span>
     </div>
 
 </section>
 
-<footer>
-    © 2026 WorldMetrics • Independent global statistics project
+
+<!-- ================= STATISTICS ================= -->
+
+<section class="section" id="statistics">
+
+    <div class="section-heading">
+
+        <div>
+            <h2>Global Statistics</h2>
+            <p>Selected worldwide indicators</p>
+        </div>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+        <div class="card">
+
+            <div class="card-top">
+                <div class="icon">👶</div>
+                <div class="arrow">→</div>
+            </div>
+
+            <h3>Births Today</h3>
+
+            <div class="number" id="births">
+                0
+            </div>
+
+            <div class="card-description">
+                Estimated demonstration counter
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-top">
+                <div class="icon">⚰️</div>
+                <div class="arrow">→</div>
+            </div>
+
+            <h3>Deaths Today</h3>
+
+            <div class="number" id="deaths">
+                0
+            </div>
+
+            <div class="card-description">
+                Estimated demonstration counter
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-top">
+                <div class="icon">🌐</div>
+                <div class="arrow">→</div>
+            </div>
+
+            <h3>Internet Users</h3>
+
+            <div class="number">
+                5.5B+
+            </div>
+
+            <div class="card-description">
+                Approximate global users
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-top">
+                <div class="icon">📱</div>
+                <div class="arrow">→</div>
+            </div>
+
+            <h3>Mobile Connections</h3>
+
+            <div class="number">
+                8.7B+
+            </div>
+
+            <div class="card-description">
+                Approximate connections
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-top">
+                <div class="icon">🌳</div>
+                <div class="arrow">→</div>
+            </div>
+
+            <h3>Forest Area</h3>
+
+            <div class="number">
+                4.06B ha
+            </div>
+
+            <div class="card-description">
+                Global forest area estimate
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-top">
+                <div class="icon">💨</div>
+                <div class="arrow">→</div>
+            </div>
+
+            <h3>CO₂ Emissions</h3>
+
+            <div class="number">
+                36B t
+            </div>
+
+            <div class="card-description">
+                Approximate annual emissions
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CATEGORIES ================= -->
+
+<section class="section" id="categories">
+
+    <div class="section-heading">
+
+        <div>
+            <h2>Explore Categories</h2>
+            <p>More sections coming soon</p>
+        </div>
+
+    </div>
+
+
+    <div class="categories">
+
+        <a href="#" class="category">
+            <div class="category-icon">👥</div>
+            <strong>Population</strong>
+            <small>People and demographics</small>
+        </a>
+
+        <a href="#" class="category">
+            <div class="category-icon">🌐</div>
+            <strong>Technology</strong>
+            <small>Internet and digital data</small>
+        </a>
+
+        <a href="#" class="category">
+            <div class="category-icon">🌱</div>
+            <strong>Environment</strong>
+            <small>Earth and climate statistics</small>
+        </a>
+
+        <a href="#" class="category">
+            <div class="category-icon">🌎</div>
+            <strong>Countries</strong>
+            <small>Explore country data</small>
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- ================= NOTICE ================= -->
+
+<div class="notice">
+
+    ⚠️ <strong>About the numbers:</strong>
+    WorldPulse is currently a prototype. Some counters shown on
+    this page are estimates or demonstration values and should
+    not be treated as official real-time measurements.
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer id="about">
+
+    <div class="footer-inner">
+
+        <div>
+
+            <div class="footer-brand">
+                🌍 WorldPulse
+            </div>
+
+            <p>
+                An independent project exploring global statistics
+                and worldwide data.
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="#">Home</a>
+            <a href="#statistics">Statistics</a>
+            <a href="#categories">Categories</a>
+
+        </div>
+
+    </div>
+
 </footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
 
 <script>
 
-    // Simple estimated counters for the prototype.
-    // These are demonstrations, not official live measurements.
+    /*
+        WORLD PULSE PROTOTYPE COUNTERS
+
+        These values are demonstrations.
+        They are NOT official live measurements.
+    */
 
     let population = 8300000000;
 
     function updatePopulation() {
+
+        // Demonstration growth rate
         population += 2;
 
         document.getElementById("population")
             .textContent = population.toLocaleString();
+
     }
 
-    setInterval(updatePopulation, 1000);
 
-
-    // Daily demonstration counters
-
-    const startTime = new Date();
-    startTime.setHours(0, 0, 0, 0);
+    /*
+        DAILY COUNTERS
+    */
 
     function updateDailyCounters() {
 
         const now = new Date();
 
+        const startOfDay = new Date();
+
+        startOfDay.setHours(0, 0, 0, 0);
+
         const secondsToday =
-            Math.floor((now - startTime) / 1000);
+            Math.floor((now - startOfDay) / 1000);
+
+
+        // Demonstration rates
 
         const births =
             Math.floor(secondsToday * 4.3);
@@ -265,16 +812,42 @@
         const deaths =
             Math.floor(secondsToday * 1.8);
 
+
         document.getElementById("births")
             .textContent = births.toLocaleString();
 
         document.getElementById("deaths")
             .textContent = deaths.toLocaleString();
+
     }
 
-    updateDailyCounters();
 
+    /*
+        CLOCK
+    */
+
+    function updateClock() {
+
+        const now = new Date();
+
+        document.getElementById("clock")
+            .textContent = now.toLocaleTimeString();
+
+    }
+
+
+    /*
+        START UPDATES
+    */
+
+    updatePopulation();
+    updateDailyCounters();
+    updateClock();
+
+
+    setInterval(updatePopulation, 1000);
     setInterval(updateDailyCounters, 1000);
+    setInterval(updateClock, 1000);
 
 </script>
 
