@@ -2,302 +2,578 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Countries — WorldPulse</title>
 
+<meta name="description"
+content="Explore countries, population statistics and global data with WorldPulse.">
+
+<!-- Leaflet -->
 <link
 rel="stylesheet"
 href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
+integrity="sha256-p4NxAoJBhIINfQ3uZtR8Q8b8M8w8v3N5x5x5x5x5x5x="
+crossorigin=""
+>
 
 <style>
-:root{
-    --blue:#1264ff;
-    --bg:#f4f7fb;
-    --card:#fff;
-    --text:#172033;
-    --muted:#667085;
-    --border:#e4e8f0;
-    --green:#12b76a;
+
+/* =========================
+   THEME
+========================= */
+
+:root {
+    --blue: #1264ff;
+    --blue-light: #4b8cff;
+    --bg: #f4f7fb;
+    --card: #ffffff;
+    --text: #172033;
+    --muted: #667085;
+    --border: #e4e8f0;
+    --footer: #101828;
 }
 
-body.dark{
-    --bg:#0b1220;
-    --card:#151f31;
-    --text:#f8fafc;
-    --muted:#aab4c4;
-    --border:#2b374c;
+body.dark {
+    --bg: #0b1220;
+    --card: #151f31;
+    --text: #f8fafc;
+    --muted: #aab4c4;
+    --border: #2b374c;
 }
 
-*{
-    box-sizing:border-box;
+/* =========================
+   RESET
+========================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-body{
-    margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    background:var(--bg);
-    color:var(--text);
+html {
+    scroll-behavior: smooth;
 }
 
-header{
-    position:sticky;
-    top:0;
-    z-index:1000;
-    background:var(--card);
-    border-bottom:1px solid var(--border);
-    padding:14px 6%;
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: background 0.25s, color 0.25s;
 }
 
-.nav{
-    max-width:1200px;
-    margin:auto;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+/* =========================
+   HEADER
+========================= */
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+
+    padding: 14px 6%;
 }
 
-.logo{
-    color:var(--blue);
-    text-decoration:none;
-    font-size:24px;
-    font-weight:800;
+.nav {
+    max-width: 1200px;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-nav{
-    display:flex;
-    gap:20px;
+.logo {
+    color: var(--blue);
+    text-decoration: none;
+
+    font-size: 25px;
+    font-weight: 800;
 }
 
-nav a{
-    text-decoration:none;
-    color:var(--muted);
-    font-size:14px;
-    font-weight:bold;
+nav {
+    display: flex;
+    gap: 22px;
 }
 
-nav a:hover{
-    color:var(--blue);
+nav a {
+    color: var(--muted);
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    transition: 0.2s;
 }
 
-#theme{
-    width:40px;
-    height:40px;
-    border:1px solid var(--border);
-    border-radius:10px;
-    background:var(--card);
-    color:var(--text);
-    cursor:pointer;
+nav a:hover {
+    color: var(--blue);
 }
 
-.hero{
-    text-align:center;
-    padding:55px 20px 30px;
+/* =========================
+   DARK MODE
+========================= */
+
+#theme {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 11px;
+
+    border: 1px solid var(--border);
+
+    background: var(--card);
+    color: var(--text);
+
+    cursor: pointer;
+
+    font-size: 18px;
+
+    transition: 0.2s;
 }
 
-.hero h1{
-    font-size:48px;
-    margin:10px 0;
+#theme:hover {
+    transform: scale(1.05);
 }
 
-.hero span{
-    color:var(--blue);
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    text-align: center;
+
+    padding: 55px 20px 35px;
 }
 
-.hero p{
-    color:var(--muted);
+.hero-icon {
+    font-size: 65px;
+    margin-bottom: 10px;
 }
 
-.container{
-    max-width:1200px;
-    margin:auto;
-    padding:20px;
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 12px;
 }
 
-.search{
-    position:relative;
-    margin-bottom:25px;
+.hero h1 span {
+    color: var(--blue);
 }
 
-#search{
-    width:100%;
-    padding:17px 20px;
-    border:1px solid var(--border);
-    border-radius:15px;
-    background:var(--card);
-    color:var(--text);
-    font-size:16px;
-    outline:none;
+.hero p {
+    color: var(--muted);
+    font-size: 17px;
 }
 
-#suggestions{
-    position:absolute;
-    left:0;
-    right:0;
-    top:58px;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:12px;
-    overflow:hidden;
-    z-index:2000;
-    box-shadow:0 15px 35px rgba(0,0,0,.12);
+/* =========================
+   CONTAINER
+========================= */
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+
+    padding: 20px;
 }
 
-.suggestion{
-    padding:14px 18px;
-    cursor:pointer;
-    border-bottom:1px solid var(--border);
+/* =========================
+   SEARCH
+========================= */
+
+.search {
+    position: relative;
+    margin-bottom: 25px;
 }
 
-.suggestion:hover{
-    background:rgba(18,100,255,.08);
+#search {
+    width: 100%;
+
+    padding: 17px 20px;
+
+    border: 1px solid var(--border);
+    border-radius: 15px;
+
+    background: var(--card);
+    color: var(--text);
+
+    font-size: 16px;
+
+    outline: none;
+
+    transition: 0.2s;
 }
 
-.map-box{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:20px;
-    overflow:hidden;
-    margin-bottom:35px;
+#search:focus {
+    border-color: var(--blue);
+
+    box-shadow:
+        0 0 0 3px rgba(18,100,255,0.12);
 }
 
-#map{
-    width:100%;
-    height:500px;
+#suggestions {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: 60px;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    z-index: 2000;
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,0.15);
 }
 
-.section-title{
-    margin:35px 0 18px;
+.suggestion {
+    padding: 14px 18px;
+
+    cursor: pointer;
+
+    border-bottom: 1px solid var(--border);
+
+    transition: 0.15s;
 }
 
-.section-title h2{
-    margin:0;
+.suggestion:hover {
+    background: rgba(18,100,255,0.08);
 }
 
-.section-title p{
-    color:var(--muted);
+/* =========================
+   MAP
+========================= */
+
+.map-box {
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    margin-bottom: 40px;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,0.05);
 }
 
-.rankings{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:18px;
-    overflow:hidden;
+.map-header {
+    padding: 20px;
+
+    border-bottom: 1px solid var(--border);
 }
 
-.rank{
-    display:grid;
-    grid-template-columns:60px 1fr 180px;
-    align-items:center;
-    padding:16px 20px;
-    border-bottom:1px solid var(--border);
+.map-header h2 {
+    margin-bottom: 6px;
 }
 
-.rank:last-child{
-    border-bottom:0;
+.map-header p {
+    color: var(--muted);
+    font-size: 14px;
 }
 
-.rank-number{
-    font-weight:bold;
+#map {
+    width: 100%;
+    height: 520px;
 }
 
-.country-name{
-    color:var(--text);
-    text-decoration:none;
-    font-weight:bold;
+/* =========================
+   SECTION
+========================= */
+
+.section-title {
+    margin: 40px 0 18px;
 }
 
-.country-name:hover{
-    color:var(--blue);
+.section-title h2 {
+    font-size: 25px;
+    margin-bottom: 6px;
 }
 
-.population{
-    text-align:right;
-    font-weight:bold;
+.section-title p {
+    color: var(--muted);
 }
 
-.loading{
-    text-align:center;
-    padding:30px;
-    color:var(--muted);
+/* =========================
+   RANKINGS
+========================= */
+
+.rankings {
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 5px 25px rgba(0,0,0,0.04);
 }
 
-footer{
-    margin-top:60px;
-    background:#101828;
-    color:white;
-    text-align:center;
-    padding:30px;
+.rank {
+    display: grid;
+
+    grid-template-columns: 70px 1fr 200px;
+
+    align-items: center;
+
+    padding: 17px 20px;
+
+    border-bottom: 1px solid var(--border);
+
+    transition: 0.15s;
 }
 
-@media(max-width:700px){
+.rank:hover {
+    background: rgba(18,100,255,0.04);
+}
 
-    nav{
-        display:none;
+.rank:last-child {
+    border-bottom: none;
+}
+
+.rank-number {
+    font-weight: bold;
+    color: var(--muted);
+}
+
+.country-name {
+    color: var(--text);
+
+    text-decoration: none;
+
+    font-weight: bold;
+}
+
+.country-name:hover {
+    color: var(--blue);
+}
+
+.population {
+    text-align: right;
+
+    color: var(--blue);
+
+    font-weight: bold;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading {
+    text-align: center;
+
+    padding: 35px;
+
+    color: var(--muted);
+}
+
+/* =========================
+   CREATOR BADGE
+========================= */
+
+.creator-container {
+    text-align: center;
+
+    padding: 40px 20px 15px;
+}
+
+.creator-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    padding: 12px 22px;
+
+    border-radius: 50px;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    box-shadow:
+        0 6px 20px rgba(0,0,0,0.06);
+
+    transition: 0.25s;
+}
+
+.creator-badge:hover {
+    transform: translateY(-3px);
+
+    border-color: var(--blue);
+
+    box-shadow:
+        0 10px 30px rgba(18,100,255,0.15);
+}
+
+.creator-badge strong {
+    color: var(--blue);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    margin-top: 30px;
+
+    background: var(--footer);
+
+    color: #d1d5db;
+
+    text-align: center;
+
+    padding: 30px 20px;
+
+    line-height: 1.7;
+
+    font-size: 14px;
+}
+
+footer a {
+    color: #9ec1ff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    nav {
+        display: none;
     }
 
-    .hero h1{
-        font-size:38px;
+    .hero h1 {
+        font-size: 37px;
     }
 
-    #map{
-        height:380px;
+    .hero-icon {
+        font-size: 52px;
     }
 
-    .rank{
-        grid-template-columns:40px 1fr;
-        gap:8px;
+    #map {
+        height: 400px;
     }
 
-    .population{
-        grid-column:2;
-        text-align:left;
+    .rank {
+        grid-template-columns: 45px 1fr;
+        gap: 8px;
+    }
+
+    .population {
+        grid-column: 2;
+        text-align: left;
+        font-size: 14px;
     }
 }
+
 </style>
 </head>
 
 <body>
 
+<!-- =========================
+     HEADER
+========================= -->
+
 <header>
+
 <div class="nav">
 
-<a class="logo" href="index.html">
+<a
+href="index.html"
+class="logo">
 🌍 WorldPulse
 </a>
 
 <nav>
-<a href="index.html">Home</a>
-<a href="world.html">World</a>
-<a href="countries.html">Countries</a>
+
+<a href="index.html">
+🏠 Home
+</a>
+
+<a href="world.html">
+🌎 World
+</a>
+
+<a href="countries.html">
+🌐 Countries
+</a>
+
 </nav>
 
-<button id="theme">🌙</button>
+<button
+id="theme"
+title="Toggle dark mode">
+🌙
+</button>
 
 </div>
+
 </header>
 
 
+<!-- =========================
+     HERO
+========================= -->
+
 <section class="hero">
 
-<div style="font-size:65px">🗺️</div>
+<div class="hero-icon">
+🗺️
+</div>
 
-<h1>Explore the <span>World</span></h1>
+<h1>
+Explore the <span>World</span>
+</h1>
 
 <p>
-Search countries, explore the map and compare populations.
+Search countries, explore the interactive map,
+and compare populations.
 </p>
 
 </section>
 
 
+<!-- =========================
+     CONTENT
+========================= -->
+
 <div class="container">
+
+
+<!-- SEARCH -->
 
 <div class="search">
 
 <input
 id="search"
+type="text"
 placeholder="🔎 Search any country..."
 autocomplete="off">
 
@@ -306,51 +582,108 @@ autocomplete="off">
 </div>
 
 
+<!-- MAP -->
+
 <div class="map-box">
+
+<div class="map-header">
+
+<h2>
+🌍 Interactive World Map
+</h2>
+
+<p>
+Click a country to view its population.
+</p>
+
+</div>
 
 <div id="map"></div>
 
 </div>
 
 
+<!-- RANKINGS -->
+
 <div class="section-title">
 
-<h2>🏆 Population Ranking</h2>
+<h2>
+🏆 Population Ranking
+</h2>
 
 <p>
-Latest available World Bank population observations.
+Latest available population observations
+from the World Bank.
 </p>
 
 </div>
 
 
-<div class="rankings" id="rankings">
+<div
+class="rankings"
+id="rankings">
 
 <div class="loading">
-Loading countries...
+⏳ Loading country data...
 </div>
+
+</div>
+
+
+<!-- CREATOR BADGE -->
+
+<div class="creator-container">
+
+<div class="creator-badge">
+
+✨ This website is created by
+<strong>Ayan Kumar</strong>
 
 </div>
 
 </div>
 
+</div>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer>
 
-© 2026 WorldPulse<br>
+<strong>🌍 WorldPulse</strong>
+
+<br>
+
+Independent global statistics project
+
+<br><br>
 
 Population data:
+
 <a
 href="https://data.worldbank.org/indicator/SP.POP.TOTL"
-target="_blank"
-style="color:#9ec1ff">
+target="_blank">
+
 World Bank
+
 </a>
+
+<br>
+
+© 2026 WorldPulse
 
 </footer>
 
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- LEAFLET JAVASCRIPT -->
+
+<script
+src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+crossorigin="">
+</script>
+
 
 <script>
 
@@ -358,72 +691,104 @@ World Bank
    DARK MODE
 ===================================== */
 
-const theme =
+const themeButton =
 document.getElementById("theme");
 
-if(
-localStorage.getItem("worldpulse-theme")
-==="dark"
-){
+
+if (
+    localStorage.getItem("worldpulse-theme")
+    === "dark"
+) {
+
     document.body.classList.add("dark");
-    theme.textContent="☀️";
+
+    themeButton.textContent = "☀️";
+
 }
 
-theme.onclick=()=>{
+
+themeButton.onclick = function () {
 
     document.body.classList.toggle("dark");
 
     const dark =
-    document.body.classList.contains("dark");
+        document.body.classList.contains("dark");
 
     localStorage.setItem(
         "worldpulse-theme",
         dark ? "dark" : "light"
     );
 
-    theme.textContent =
-    dark ? "☀️" : "🌙";
+    themeButton.textContent =
+        dark ? "☀️" : "🌙";
+
 };
 
 
 /* =====================================
-   COUNTRY DATA
+   DATA
 ===================================== */
 
-let countries=[];
-let populations={};
+let countries = [];
+
+let populations = {};
 
 
 /* =====================================
-   LOAD COUNTRY LIST
+   LOAD COUNTRIES
 ===================================== */
 
-async function loadCountries(){
+async function loadCountries() {
 
-    try{
+    try {
 
         const response =
-        await fetch(
-        "https://api.worldbank.org/v2/country?format=json&per_page=400"
-        );
+            await fetch(
+                "https://api.worldbank.org/v2/country?format=json&per_page=400"
+            );
 
         const data =
-        await response.json();
+            await response.json();
+
+        if (!data[1]) {
+            throw new Error(
+                "Country data unavailable"
+            );
+        }
 
         countries =
-        data[1]
-        .filter(c =>
-            c.region &&
-            c.region.id !== "NA"
-        );
+            data[1].filter(
+                country =>
+                    country.region &&
+                    country.region.id !== "NA"
+            );
 
-        loadPopulation();
+        await loadPopulation();
 
-    }catch(error){
+    }
+
+    catch (error) {
 
         console.error(error);
 
+        document.getElementById(
+            "rankings"
+        ).innerHTML = `
+
+        <div class="loading">
+
+            ❌ Could not load country data.
+
+            <br><br>
+
+            Please refresh the page.
+
+        </div>
+
+        `;
+
     }
+
 }
 
 
@@ -431,30 +796,41 @@ async function loadCountries(){
    LOAD POPULATION
 ===================================== */
 
-async function loadPopulation(){
+async function loadPopulation() {
 
-    try{
+    try {
 
         const response =
-        await fetch(
-        "https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL?format=json&per_page=4000&mrv=1"
-        );
+            await fetch(
+                "https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL?format=json&per_page=4000&mrv=1"
+            );
 
         const data =
-        await response.json();
+            await response.json();
 
-        data[1].forEach(row=>{
+        if (!data[1]) {
+            throw new Error(
+                "Population data unavailable"
+            );
+        }
 
-            if(
+        data[1].forEach(row => {
+
+            if (
                 row.countryiso3code &&
                 row.value !== null
-            ){
+            ) {
 
                 populations[
                     row.countryiso3code
-                ]={
-                    value:Number(row.value),
-                    year:Number(row.date)
+                ] = {
+
+                    value:
+                        Number(row.value),
+
+                    year:
+                        Number(row.date)
+
                 };
 
             }
@@ -463,15 +839,28 @@ async function loadPopulation(){
 
         renderRankings();
 
-    }catch(error){
+        loadMap();
+
+    }
+
+    catch (error) {
 
         console.error(error);
 
-        document.getElementById("rankings")
-        .innerHTML=
-        "<div class='loading'>Unable to load data.</div>";
+        document.getElementById(
+            "rankings"
+        ).innerHTML = `
+
+        <div class="loading">
+
+            ❌ Population data could not be loaded.
+
+        </div>
+
+        `;
 
     }
+
 }
 
 
@@ -479,74 +868,97 @@ async function loadPopulation(){
    RANKINGS
 ===================================== */
 
-function renderRankings(){
+function renderRankings() {
 
     const box =
-    document.getElementById("rankings");
+        document.getElementById(
+            "rankings"
+        );
 
     const ranking =
-    countries
-    .map(country=>{
+        countries
+            .map(country => {
 
-        const code =
-        country.id;
+                const code =
+                    country.id;
 
-        return {
+                return {
 
-            code,
+                    code: code,
 
-            name:
-            country.name,
+                    name:
+                        country.name,
 
-            population:
-            populations[code]
-            ? populations[code].value
-            : 0
+                    population:
+                        populations[code]
+                        ? populations[code].value
+                        : 0
 
-        };
+                };
 
-    })
-    .filter(x=>x.population>0)
-    .sort(
-        (a,b)=>
-        b.population-a.population
-    )
-    .slice(0,100);
+            })
+
+            .filter(
+                country =>
+                    country.population > 0
+            )
+
+            .sort(
+                (a, b) =>
+                    b.population -
+                    a.population
+            )
+
+            .slice(0, 100);
 
 
-    box.innerHTML="";
+    box.innerHTML = "";
+
 
     ranking.forEach(
-    (country,index)=>{
+        (country, index) => {
 
-        const row =
-        document.createElement("div");
+            const row =
+                document.createElement(
+                    "div"
+                );
 
-        row.className="rank";
+            row.className = "rank";
 
-        row.innerHTML=`
 
-        <div class="rank-number">
-            #${index+1}
-        </div>
+            row.innerHTML = `
 
-        <div>
-            <a
-            class="country-name"
-            href="country.html?country=${country.code}">
-                ${country.name}
-            </a>
-        </div>
+                <div class="rank-number">
 
-        <div class="population">
-            ${country.population.toLocaleString()}
-        </div>
+                    #${index + 1}
 
-        `;
+                </div>
 
-        box.appendChild(row);
+                <div>
 
-    });
+                    <a
+                    class="country-name"
+                    href="country.html?country=${country.code}">
+
+                        🌍 ${country.name}
+
+                    </a>
+
+                </div>
+
+                <div class="population">
+
+                    ${country.population.toLocaleString()}
+
+                </div>
+
+            `;
+
+
+            box.appendChild(row);
+
+        }
+    );
 
 }
 
@@ -555,253 +967,394 @@ function renderRankings(){
    SEARCH
 ===================================== */
 
-const search =
-document.getElementById("search");
+const searchInput =
+    document.getElementById(
+        "search"
+    );
 
 const suggestions =
-document.getElementById("suggestions");
+    document.getElementById(
+        "suggestions"
+    );
 
 
-search.addEventListener(
-"input",
-()=>{
+searchInput.addEventListener(
+    "input",
+    function () {
 
-    const query =
-    search.value
-    .trim()
-    .toLowerCase();
+        const query =
+            searchInput.value
+                .trim()
+                .toLowerCase();
 
-    suggestions.innerHTML="";
-
-    if(!query)
-        return;
+        suggestions.innerHTML = "";
 
 
-    const results =
-    countries
-    .filter(country =>
-        country.name
-        .toLowerCase()
-        .includes(query)
-    )
-    .slice(0,10);
+        if (!query) {
+            return;
+        }
 
 
-    results.forEach(country=>{
+        const results =
+            countries
+                .filter(
+                    country =>
+                        country.name
+                            .toLowerCase()
+                            .includes(query)
+                )
+                .slice(0, 10);
 
-        const item =
-        document.createElement("div");
 
-        item.className="suggestion";
+        results.forEach(country => {
 
-        item.textContent =
-        country.name;
+            const item =
+                document.createElement(
+                    "div"
+                );
 
-        item.onclick=()=>{
+            item.className =
+                "suggestion";
 
-            window.location.href =
-            "country.html?country="
-            +country.id;
+            item.textContent =
+                "🌍 " + country.name;
 
-        };
 
-        suggestions.appendChild(item);
+            item.onclick = function () {
 
-    });
+                window.location.href =
+                    "country.html?country="
+                    +
+                    country.id;
 
-});
+            };
 
+
+            suggestions.appendChild(item);
+
+        });
+
+    }
+);
+
+
+/* CLOSE SEARCH */
 
 document.addEventListener(
-"click",
-event=>{
+    "click",
+    function (event) {
 
-    if(!event.target.closest(".search"))
-        suggestions.innerHTML="";
+        if (
+            !event.target.closest(
+                ".search"
+            )
+        ) {
 
-});
+            suggestions.innerHTML =
+                "";
+
+        }
+
+    }
+);
 
 
 /* =====================================
    MAP
 ===================================== */
 
-const map =
-L.map("map")
- .setView([20,0],2);
+function loadMap() {
+
+    const map =
+        L.map("map")
+            .setView(
+                [20, 0],
+                2
+            );
 
 
-L.tileLayer(
-"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-{
-    attribution:
-    '&copy; OpenStreetMap contributors'
-}
-).addTo(map);
-
-
-/*
-This GeoJSON contains country boundaries.
-*/
-
-fetch(
-"https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson"
-)
-.then(response=>response.json())
-.then(geojson=>{
-
-    L.geoJSON(
-        geojson,
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
 
-            style:feature=>{
-
-                const code =
-                feature.properties.ISO_A3;
-
-                const population =
-                populations[code]
-                ? populations[code].value
-                : 0;
-
-
-                return {
-
-                    fillColor:
-                    populationColor(
-                        population
-                    ),
-
-                    weight:1,
-
-                    color:"#ffffff",
-
-                    fillOpacity:.72
-
-                };
-
-            },
-
-
-            onEachFeature:
-            (feature,layer)=>{
-
-                const code =
-                feature.properties.ISO_A3;
-
-                const name =
-                feature.properties.ADMIN
-                ||
-                feature.properties.NAME
-                ||
-                "Country";
-
-
-                const population =
-                populations[code]
-                ? populations[code].value
-                : null;
-
-
-                layer.bindPopup(`
-
-                    <strong>
-                        ${name}
-                    </strong>
-
-                    <br><br>
-
-                    ${
-                    population
-                    ?
-                    "Population: "
-                    +
-                    population.toLocaleString()
-                    :
-                    "Population unavailable"
-                    }
-
-                    <br><br>
-
-                    ${
-                    populations[code]
-                    ?
-                    `<a href="country.html?country=${code}">
-                    View country →
-                    </a>`
-                    :
-                    ""
-                    }
-
-                `);
-
-
-                layer.on({
-
-                    mouseover:event=>{
-
-                        event.target.setStyle({
-                            weight:2,
-                            fillOpacity:.9
-                        });
-
-                    },
-
-                    mouseout:event=>{
-
-                        event.target.setStyle({
-                            weight:1,
-                            fillOpacity:.72
-                        });
-
-                    }
-
-                });
-
-            }
+            attribution:
+                '&copy; OpenStreetMap contributors'
 
         }
     ).addTo(map);
 
-})
-.catch(error=>{
-    console.error(
-        "Map data error:",
-        error
+
+    fetch(
+        "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson"
+    )
+
+    .then(
+        response =>
+            response.json()
+    )
+
+    .then(
+        geojson => {
+
+            L.geoJSON(
+                geojson,
+                {
+
+                    style:
+                        function (feature) {
+
+                            const code =
+                                feature.properties.ISO_A3;
+
+                            const population =
+                                populations[code]
+                                ?
+                                populations[code].value
+                                :
+                                0;
+
+
+                            return {
+
+                                fillColor:
+                                    populationColor(
+                                        population
+                                    ),
+
+                                weight: 1,
+
+                                color: "#ffffff",
+
+                                fillOpacity: 0.72
+
+                            };
+
+                        },
+
+
+                    onEachFeature:
+                        function (
+                            feature,
+                            layer
+                        ) {
+
+                            const code =
+                                feature.properties.ISO_A3;
+
+
+                            const name =
+                                feature.properties.ADMIN
+                                ||
+                                feature.properties.NAME
+                                ||
+                                "Country";
+
+
+                            const data =
+                                populations[code];
+
+
+                            let popup = `
+
+                                <div style="
+                                    min-width:180px;
+                                    text-align:center;
+                                ">
+
+                                <strong style="
+                                    font-size:17px;
+                                ">
+
+                                🌍 ${name}
+
+                                </strong>
+
+                                <br><br>
+
+                            `;
+
+
+                            if (data) {
+
+                                popup += `
+
+                                    👥 Population
+
+                                    <br>
+
+                                    <strong>
+
+                                    ${data.value.toLocaleString()}
+
+                                    </strong>
+
+                                    <br>
+
+                                    <small>
+
+                                    Data year:
+                                    ${data.year}
+
+                                    </small>
+
+                                    <br><br>
+
+                                    <a
+                                    href="country.html?country=${code}">
+
+                                    View country →
+
+                                    </a>
+
+                                `;
+
+                            } else {
+
+                                popup += `
+
+                                    Population data unavailable
+
+                                `;
+
+                            }
+
+
+                            popup +=
+                                "</div>";
+
+
+                            layer.bindPopup(
+                                popup
+                            );
+
+
+                            layer.on({
+
+                                mouseover:
+                                    function (event) {
+
+                                        event.target.setStyle({
+
+                                            weight: 2,
+
+                                            fillOpacity: 0.9
+
+                                        });
+
+                                    },
+
+
+                                mouseout:
+                                    function (event) {
+
+                                        event.target.setStyle({
+
+                                            weight: 1,
+
+                                            fillOpacity: 0.72
+
+                                        });
+
+                                    }
+
+                            });
+
+                        }
+
+                }
+
+            ).addTo(map);
+
+        }
+    )
+
+    .catch(
+        error => {
+
+            console.error(
+                "Map error:",
+                error
+            );
+
+            document.getElementById(
+                "map"
+            ).innerHTML = `
+
+                <div style="
+                    padding:50px;
+                    text-align:center;
+                ">
+
+                    ❌ Map data could not be loaded.
+
+                    <br><br>
+
+                    Please refresh the page.
+
+                </div>
+
+            `;
+
+        }
     );
-});
 
-
-/* =====================================
-   MAP COLORS
-===================================== */
-
-function populationColor(population){
-
-    if(!population)
-        return "#d9dee8";
-
-    if(population>=1000000000)
-        return "#083b9c";
-
-    if(population>=500000000)
-        return "#1264ff";
-
-    if(population>=100000000)
-        return "#4b8cff";
-
-    if(population>=50000000)
-        return "#7aa8ff";
-
-    if(population>=10000000)
-        return "#a8c4ff";
-
-    return "#d2e0ff";
 }
 
 
 /* =====================================
-   START
+   POPULATION MAP COLORS
+===================================== */
+
+function populationColor(
+    population
+) {
+
+    if (!population) {
+        return "#d9dee8";
+    }
+
+    if (
+        population >=
+        1000000000
+    ) {
+        return "#083b9c";
+    }
+
+    if (
+        population >=
+        500000000
+    ) {
+        return "#1264ff";
+    }
+
+    if (
+        population >=
+        100000000
+    ) {
+        return "#4b8cff";
+    }
+
+    if (
+        population >=
+        50000000
+    ) {
+        return "#7aa8ff";
+    }
+
+    if (
+        population >=
+        10000000
+    ) {
+        return "#a8c4ff";
+    }
+
+    return "#d2e0ff";
+
+}
+
+
+/* =====================================
+   START WEBSITE
 ===================================== */
 
 loadCountries();
