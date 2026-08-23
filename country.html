@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Country Statistics | WorldPulse</title>
+
+<style>
+
+:root {
+    --primary: #0b5cff;
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --text: #172033;
+    --muted: #667085;
+    --border: #e4e8f0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+header {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 18px 7%;
+}
+
+.logo {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.hero {
+    text-align: center;
+    padding: 60px 20px 35px;
+}
+
+.flag {
+    font-size: 80px;
+}
+
+.hero h1 {
+    font-size: 45px;
+    margin: 10px 0;
+}
+
+.hero p {
+    color: var(--muted);
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+.population-box {
+    text-align: center;
+    background: var(--card);
+    padding: 40px;
+    border-radius: 22px;
+    border: 1px solid var(--border);
+    margin-bottom: 40px;
+}
+
+.population-box h2 {
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.population {
+    color: var(--primary);
+    font-size: 50px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.section-title {
+    margin: 35px 0 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.card h3 {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.value {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+footer {
+    margin-top: 60px;
+    background: #101828;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+@media(max-width: 750px) {
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .population {
+        font-size: 38px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <a href="index.html" class="logo">🌍 WorldPulse</a>
+</header>
+
+
+<section class="hero">
+
+    <div class="flag" id="flag">🌍</div>
+
+    <h1 id="countryName">Country</h1>
+
+    <p id="continent">Country statistics and information</p>
+
+</section>
+
+
+<div class="container">
+
+    <section class="population-box">
+
+        <h2>Estimated Population</h2>
+
+        <div class="population" id="population">
+            Loading...
+        </div>
+
+    </section>
+
+
+    <h2 class="section-title">🌎 Country Information</h2>
+
+    <div class="grid">
+
+        <div class="card">
+            <h3>🏛️ Capital</h3>
+            <div class="value" id="capital">—</div>
+        </div>
+
+        <div class="card">
+            <h3>🌍 Continent</h3>
+            <div class="value" id="continentCard">—</div>
+        </div>
+
+        <div class="card">
+            <h3>🗣️ Languages</h3>
+            <div class="value" id="language">—</div>
+        </div>
+
+        <div class="card">
+            <h3>💰 Currency</h3>
+            <div class="value" id="currency">—</div>
+        </div>
+
+        <div class="card">
+            <h3>📏 Area</h3>
+            <div class="value" id="area">—</div>
+        </div>
+
+        <div class="card">
+            <h3>🕒 Time Zone</h3>
+            <div class="value" id="timezone">—</div>
+        </div>
+
+    </div>
+
+
+    <h2 class="section-title">📊 Quick Statistics</h2>
+
+    <div class="grid">
+
+        <div class="card">
+            <h3>👥 Population Rank</h3>
+            <div class="value" id="rank">—</div>
+        </div>
+
+        <div class="card">
+            <h3>🏙️ Major Cities</h3>
+            <div class="value" id="cities">—</div>
+        </div>
+
+        <div class="card">
+            <h3>🌐 Internet Users</h3>
+            <div class="value" id="internet">—</div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+    © 2026 WorldPulse • Global Statistics Project
+</footer>
+
+
+<script>
+
+/* COUNTRY DATABASE */
+
+const countries = {
+
+    india: {
+        name: "India",
+        flag: "🇮🇳",
+        continent: "Asia",
+        population: "1.46 Billion",
+        capital: "New Delhi",
+        language: "Hindi, English + regional languages",
+        currency: "Indian Rupee (₹)",
+        area: "3.28 million km²",
+        timezone: "UTC +5:30",
+        rank: "#1",
+        cities: "Delhi, Mumbai, Bengaluru",
+        internet: "800M+"
+    },
+
+    china: {
+        name: "China",
+        flag: "🇨🇳",
+        continent: "Asia",
+        population: "1.41 Billion",
+        capital: "Beijing",
+        language: "Mandarin Chinese",
+        currency: "Chinese Yuan (¥)",
+        area: "9.6 million km²",
+        timezone: "UTC +8",
+        rank: "#2",
+        cities: "Shanghai, Beijing, Shenzhen",
+        internet: "1B+"
+    },
+
+    usa: {
+        name: "United States",
+        flag: "🇺🇸",
+        continent: "North America",
+        population: "340 Million",
+        capital: "Washington, D.C.",
+        language: "English",
+        currency: "US Dollar ($)",
+        area: "9.83 million km²",
+        timezone: "Multiple time zones",
+        rank: "#3",
+        cities: "New York, Los Angeles, Chicago",
+        internet: "320M+"
+    },
+
+    indonesia: {
+        name: "Indonesia",
+        flag: "🇮🇩",
+        continent: "Asia",
+        population: "285 Million",
+        capital: "Jakarta",
+        language: "Indonesian",
+        currency: "Indonesian Rupiah (Rp)",
+        area: "1.9 million km²",
+        timezone: "Multiple time zones",
+        rank: "#4",
+        cities: "Jakarta, Surabaya, Bandung",
+        internet: "220M+"
+    },
+
+    brazil: {
+        name: "Brazil",
+        flag: "🇧🇷",
+        continent: "South America",
+        population: "213 Million",
+        capital: "Brasília",
+        language: "Portuguese",
+        currency: "Brazilian Real (R$)",
+        area: "8.5 million km²",
+        timezone: "Multiple time zones",
+        rank: "#7",
+        cities: "São Paulo, Rio de Janeiro, Brasília",
+        internet: "180M+"
+    }
+
+};
+
+
+/* GET COUNTRY FROM URL */
+
+const params = new URLSearchParams(window.location.search);
+
+const countryKey =
+    params.get("country") || "india";
+
+const country =
+    countries[countryKey.toLowerCase()];
+
+
+/* DISPLAY COUNTRY */
+
+if (country) {
+
+    document.title =
+        country.name + " Statistics | WorldPulse";
+
+    document.getElementById("flag")
+        .textContent = country.flag;
+
+    document.getElementById("countryName")
+        .textContent = country.name;
+
+    document.getElementById("continent")
+        .textContent =
+        "Country statistics and information • " +
+        country.continent;
+
+    document.getElementById("population")
+        .textContent =
+        country.population;
+
+    document.getElementById("capital")
+        .textContent =
+        country.capital;
+
+    document.getElementById("continentCard")
+        .textContent =
+        country.continent;
+
+    document.getElementById("language")
+        .textContent =
+        country.language;
+
+    document.getElementById("currency")
+        .textContent =
+        country.currency;
+
+    document.getElementById("area")
+        .textContent =
+        country.area;
+
+    document.getElementById("timezone")
+        .textContent =
+        country.timezone;
+
+    document.getElementById("rank")
+        .textContent =
+        country.rank;
+
+    document.getElementById("cities")
+        .textContent =
+        country.cities;
+
+    document.getElementById("internet")
+        .textContent =
+        country.internet;
+
+} else {
+
+    document.getElementById("countryName")
+        .textContent =
+        "Country Not Found";
+
+}
+
+</script>
+
+</body>
+</html>
