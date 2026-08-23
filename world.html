@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>World Statistics | WorldPulse</title>
+
+<style>
+:root {
+    --primary: #0b5cff;
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --text: #172033;
+    --muted: #667085;
+    --border: #e4e8f0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+header {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 18px 7%;
+}
+
+.logo {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.hero {
+    text-align: center;
+    padding: 60px 20px 35px;
+}
+
+.world-icon {
+    font-size: 80px;
+}
+
+.hero h1 {
+    font-size: 45px;
+    margin: 10px 0;
+}
+
+.hero p {
+    color: var(--muted);
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+.main-stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 40px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.population {
+    color: var(--primary);
+    font-size: 55px;
+    font-weight: bold;
+}
+
+.section-title {
+    margin: 40px 0 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 20px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.card h3 {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.value {
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.description {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+footer {
+    margin-top: 60px;
+    background: #101828;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+@media(max-width:750px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .population{
+        font-size:38px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<a href="index.html" class="logo">🌍 WorldPulse</a>
+</header>
+
+<section class="hero">
+<div class="world-icon">🌍</div>
+<h1>Our World</h1>
+<p>Global population, geography and worldwide statistics.</p>
+</section>
+
+<div class="container">
+
+<section class="main-stat">
+<h3>ESTIMATED WORLD POPULATION</h3>
+<div class="population" id="population">8,300,000,000</div>
+<p class="description">Prototype estimate</p>
+</section>
+
+<h2 class="section-title">🌎 World at a Glance</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>🌍 Continents</h3>
+<div class="value">7</div>
+</div>
+
+<div class="card">
+<h3>🏳️ Countries</h3>
+<div class="value">195</div>
+</div>
+
+<div class="card">
+<h3>🗣️ Languages</h3>
+<div class="value">7,000+</div>
+</div>
+
+<div class="card">
+<h3>🌐 Internet Users</h3>
+<div class="value">5.5B+</div>
+</div>
+
+<div class="card">
+<h3>🏙️ Urban Population</h3>
+<div class="value">4.6B+</div>
+</div>
+
+<div class="card">
+<h3>🌳 Forest Area</h3>
+<div class="value">4.06B ha</div>
+</div>
+
+</div>
+
+<h2 class="section-title">⚡ Global Activity</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>👶 Births Today</h3>
+<div class="value" id="births">0</div>
+</div>
+
+<div class="card">
+<h3>⚰️ Deaths Today</h3>
+<div class="value" id="deaths">0</div>
+</div>
+
+<div class="card">
+<h3>📈 Population Growth Today</h3>
+<div class="value" id="growth">0</div>
+</div>
+
+<div class="card">
+<h3>💧 Water Usage Today</h3>
+<div class="value" id="water">0</div>
+</div>
+
+<div class="card">
+<h3>⚡ Energy Consumption Today</h3>
+<div class="value" id="energy">0</div>
+</div>
+
+<div class="card">
+<h3>🌡️ Climate Indicator</h3>
+<div class="value">+1.2°C</div>
+</div>
+
+</div>
+
+</div>
+
+<footer>
+© 2026 WorldPulse
+</footer>
+
+<script>
+
+let population = 8300000000;
+
+function updatePopulation(){
+    population += 2;
+
+    document.getElementById("population").textContent =
+    population.toLocaleString();
+}
+
+function updateCounters(){
+
+    const now = new Date();
+
+    const start = new Date();
+    start.setHours(0,0,0,0);
+
+    const seconds =
+    Math.floor((now-start)/1000);
+
+    document.getElementById("births").textContent =
+    Math.floor(seconds*4.3).toLocaleString();
+
+    document.getElementById("deaths").textContent =
+    Math.floor(seconds*1.8).toLocaleString();
+
+    document.getElementById("growth").textContent =
+    "+" + Math.floor(seconds*2.5).toLocaleString();
+
+    document.getElementById("water").textContent =
+    Math.floor(seconds*140000).toLocaleString() + " m³";
+
+    document.getElementById("energy").textContent =
+    Math.floor(seconds*50000).toLocaleString() + " MWh";
+
+}
+
+updatePopulation();
+updateCounters();
+
+setInterval(updatePopulation,1000);
+setInterval(updateCounters,1000);
+
+</script>
+
+</body>
+</html>
