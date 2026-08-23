@@ -1,158 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>World Statistics | WorldPulse</title>
 
 <style>
+
 :root {
-    --primary: #0b5cff;
-    --bg: #f5f7fb;
-    --card: #ffffff;
-    --text: #172033;
-    --muted: #667085;
-    --border: #e4e8f0;
+    --primary:#0b5cff;
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --text:#172033;
+    --muted:#667085;
+    --border:#e4e8f0;
+}
+
+body.dark {
+    --bg:#0f172a;
+    --card:#182235;
+    --text:#f8fafc;
+    --muted:#aab4c4;
+    --border:#2d3a50;
 }
 
 * {
-    box-sizing: border-box;
+    box-sizing:border-box;
 }
 
 body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
 }
 
 header {
-    background: white;
-    border-bottom: 1px solid var(--border);
-    padding: 18px 7%;
+    background:var(--card);
+    border-bottom:1px solid var(--border);
+    padding:16px 7%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 }
 
 .logo {
-    color: var(--primary);
-    text-decoration: none;
-    font-size: 24px;
-    font-weight: bold;
+    color:var(--primary);
+    text-decoration:none;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.actions {
+    display:flex;
+    gap:8px;
+}
+
+button {
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    cursor:pointer;
+    font-size:17px;
 }
 
 .hero {
-    text-align: center;
-    padding: 60px 20px 35px;
+    text-align:center;
+    padding:60px 20px 35px;
 }
 
-.world-icon {
-    font-size: 80px;
+.world {
+    font-size:80px;
 }
 
 .hero h1 {
-    font-size: 45px;
-    margin: 10px 0;
+    font-size:46px;
+    margin:10px 0;
 }
 
 .hero p {
-    color: var(--muted);
+    color:var(--muted);
 }
 
 .container {
-    max-width: 1100px;
-    margin: auto;
-    padding: 20px;
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
 }
 
-.main-stat {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 22px;
-    padding: 40px;
-    text-align: center;
-    margin-bottom: 40px;
+.main {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:23px;
+    text-align:center;
+    padding:42px 20px;
 }
 
-.population {
-    color: var(--primary);
-    font-size: 55px;
-    font-weight: bold;
+.label {
+    color:var(--muted);
+    font-size:13px;
+    font-weight:bold;
+}
+
+#population {
+    color:var(--primary);
+    font-size:clamp(40px,7vw,65px);
+    font-weight:bold;
+    margin:12px 0;
+}
+
+.status {
+    color:var(--muted);
+    font-size:12px;
 }
 
 .section-title {
-    margin: 40px 0 20px;
+    margin:42px 0 20px;
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: 20px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
 }
 
 .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:17px;
+    padding:24px;
 }
 
 .card h3 {
-    color: var(--muted);
-    font-size: 14px;
+    color:var(--muted);
+    font-size:14px;
 }
 
 .value {
-    font-size: 25px;
-    font-weight: bold;
-    margin-top: 8px;
+    font-size:27px;
+    font-weight:bold;
+    margin-top:9px;
 }
 
 .description {
-    color: var(--muted);
-    font-size: 13px;
+    color:var(--muted);
+    font-size:12px;
+    margin-top:7px;
 }
 
 footer {
-    margin-top: 60px;
-    background: #101828;
-    color: white;
-    text-align: center;
-    padding: 25px;
+    margin-top:60px;
+    padding:30px;
+    background:#101828;
+    color:white;
+    text-align:center;
+}
+
+footer a {
+    color:#9ec1ff;
 }
 
 @media(max-width:750px){
-    .grid{
+
+    .grid {
         grid-template-columns:1fr;
     }
 
-    .population{
-        font-size:38px;
-    }
 }
+
 </style>
+
 </head>
 
 <body>
 
 <header>
-<a href="index.html" class="logo">🌍 WorldPulse</a>
+
+<a class="logo" href="index.html">
+🌍 WorldPulse
+</a>
+
+<div class="actions">
+
+<button id="theme">
+🌙
+</button>
+
+</div>
+
 </header>
 
+
 <section class="hero">
-<div class="world-icon">🌍</div>
+
+<div class="world">
+🌍
+</div>
+
 <h1>Our World</h1>
-<p>Global population, geography and worldwide statistics.</p>
+
+<p>
+Global population and worldwide statistics.
+</p>
+
 </section>
+
 
 <div class="container">
 
-<section class="main-stat">
-<h3>ESTIMATED WORLD POPULATION</h3>
-<div class="population" id="population">8,300,000,000</div>
-<p class="description">Prototype estimate</p>
+<section class="main">
+
+<div class="label">
+ESTIMATED WORLD POPULATION
+</div>
+
+<div id="population">
+Loading...
+</div>
+
+<div class="status" id="status">
+Connecting to World Bank...
+</div>
+
 </section>
 
-<h2 class="section-title">🌎 World at a Glance</h2>
+
+<h2 class="section-title">
+🌎 World at a Glance
+</h2>
 
 <div class="grid">
 
@@ -172,107 +252,269 @@ footer {
 </div>
 
 <div class="card">
-<h3>🌐 Internet Users</h3>
-<div class="value">5.5B+</div>
+<h3>👥 Population</h3>
+<div class="value" id="populationCard">
+Loading...
+</div>
 </div>
 
 <div class="card">
-<h3>🏙️ Urban Population</h3>
-<div class="value">4.6B+</div>
+<h3>📅 Data Year</h3>
+<div class="value" id="year">
+Loading...
+</div>
 </div>
 
 <div class="card">
-<h3>🌳 Forest Area</h3>
-<div class="value">4.06B ha</div>
+<h3>📈 Annual Growth</h3>
+<div class="value" id="growth">
+Loading...
+</div>
 </div>
 
 </div>
 
-<h2 class="section-title">⚡ Global Activity</h2>
+
+<h2 class="section-title">
+📊 Population Data
+</h2>
 
 <div class="grid">
 
 <div class="card">
-<h3>👶 Births Today</h3>
-<div class="value" id="births">0</div>
+<h3>Latest Population</h3>
+
+<div class="value" id="latest">
+Loading...
 </div>
+
+<div class="description">
+Latest World Bank observation
+</div>
+
+</div>
+
 
 <div class="card">
-<h3>⚰️ Deaths Today</h3>
-<div class="value" id="deaths">0</div>
+<h3>Previous Population</h3>
+
+<div class="value" id="previous">
+Loading...
 </div>
+
+<div class="description">
+Previous observation
+</div>
+
+</div>
+
 
 <div class="card">
-<h3>📈 Population Growth Today</h3>
-<div class="value" id="growth">0</div>
+<h3>Annual Increase</h3>
+
+<div class="value" id="increase">
+Loading...
 </div>
 
-<div class="card">
-<h3>💧 Water Usage Today</h3>
-<div class="value" id="water">0</div>
-</div>
-
-<div class="card">
-<h3>⚡ Energy Consumption Today</h3>
-<div class="value" id="energy">0</div>
-</div>
-
-<div class="card">
-<h3>🌡️ Climate Indicator</h3>
-<div class="value">+1.2°C</div>
+<div class="description">
+Difference between observations
 </div>
 
 </div>
 
 </div>
+
+</div>
+
 
 <footer>
-© 2026 WorldPulse
+
+© 2026 WorldPulse<br>
+Population data: World Bank API
+
 </footer>
+
 
 <script>
 
-let population = 8300000000;
+const API =
+"https://api.worldbank.org/v2/country/WLD/indicator/SP.POP.TOTL?format=json&per_page=10";
 
-function updatePopulation(){
-    population += 2;
 
-    document.getElementById("population").textContent =
-    population.toLocaleString();
+async function loadPopulation(){
+
+    try{
+
+        const response =
+        await fetch(API);
+
+        if(!response.ok)
+            throw new Error("API error");
+
+        const data =
+        await response.json();
+
+        const rows =
+        data[1].filter(x =>
+            x.value !== null
+        );
+
+        const latest =
+        rows[0];
+
+        const previous =
+        rows[1];
+
+        const latestValue =
+        Number(latest.value);
+
+        const previousValue =
+        Number(previous.value);
+
+        const latestYear =
+        Number(latest.date);
+
+        const previousYear =
+        Number(previous.date);
+
+        const annualIncrease =
+        latestValue -
+        previousValue;
+
+        const annualRate =
+        (annualIncrease /
+        previousValue) * 100;
+
+
+        document.getElementById("populationCard")
+        .textContent =
+        latestValue.toLocaleString();
+
+        document.getElementById("year")
+        .textContent =
+        latestYear;
+
+        document.getElementById("growth")
+        .textContent =
+        annualRate.toFixed(2)+"%";
+
+        document.getElementById("latest")
+        .textContent =
+        latestValue.toLocaleString();
+
+        document.getElementById("previous")
+        .textContent =
+        previousValue.toLocaleString();
+
+        document.getElementById("increase")
+        .textContent =
+        annualIncrease.toLocaleString();
+
+
+        document.getElementById("status")
+        .textContent =
+        "World Bank data • "+latestYear;
+
+
+        /*
+        Estimate the current population.
+
+        We take the latest annual observation and
+        extrapolate using the change between the
+        latest two observations.
+        */
+
+        const years =
+        latestYear - previousYear;
+
+        const yearlyChange =
+        annualIncrease / years;
+
+
+        function updateClock(){
+
+            const now =
+            new Date();
+
+            const start =
+            new Date(
+                latestYear,
+                0,
+                1
+            );
+
+            const elapsed =
+            (now-start) /
+            (1000*60*60*24);
+
+            const estimate =
+            latestValue +
+            yearlyChange *
+            (elapsed/365.2425);
+
+
+            document.getElementById("population")
+            .textContent =
+            Math.round(estimate)
+            .toLocaleString();
+
+        }
+
+        updateClock();
+
+        setInterval(updateClock,1000);
+
+
+    }catch(error){
+
+        console.error(error);
+
+        document.getElementById("population")
+        .textContent =
+        "Unavailable";
+
+        document.getElementById("status")
+        .textContent =
+        "Could not load API data";
+
+    }
+
 }
 
-function updateCounters(){
 
-    const now = new Date();
+loadPopulation();
 
-    const start = new Date();
-    start.setHours(0,0,0,0);
 
-    const seconds =
-    Math.floor((now-start)/1000);
+/* DARK MODE */
 
-    document.getElementById("births").textContent =
-    Math.floor(seconds*4.3).toLocaleString();
+const theme =
+document.getElementById("theme");
 
-    document.getElementById("deaths").textContent =
-    Math.floor(seconds*1.8).toLocaleString();
+if(localStorage.getItem("worldpulse-theme")
+==="dark"){
 
-    document.getElementById("growth").textContent =
-    "+" + Math.floor(seconds*2.5).toLocaleString();
+    document.body.classList.add("dark");
 
-    document.getElementById("water").textContent =
-    Math.floor(seconds*140000).toLocaleString() + " m³";
-
-    document.getElementById("energy").textContent =
-    Math.floor(seconds*50000).toLocaleString() + " MWh";
+    theme.textContent="☀️";
 
 }
 
-updatePopulation();
-updateCounters();
+theme.onclick=()=>{
 
-setInterval(updatePopulation,1000);
-setInterval(updateCounters,1000);
+    document.body.classList.toggle("dark");
+
+    const dark =
+    document.body.classList.contains("dark");
+
+    localStorage.setItem(
+        "worldpulse-theme",
+        dark ? "dark":"light"
+    );
+
+    theme.textContent =
+    dark ? "☀️":"🌙";
+
+};
 
 </script>
 
