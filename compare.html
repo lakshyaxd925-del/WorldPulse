@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Compare Countries — WorldPulse</title>
+
+<meta name="description"
+content="Compare population, area, capital, region and currencies of countries with WorldPulse.">
+
+<style>
+
+:root {
+    --blue: #1264ff;
+    --blue-light: #4b8cff;
+    --bg: #f4f7fb;
+    --card: #ffffff;
+    --text: #172033;
+    --muted: #667085;
+    --border: #e4e8f0;
+    --footer: #101828;
+}
+
+body.dark {
+    --bg: #0b1220;
+    --card: #151f31;
+    --text: #f8fafc;
+    --muted: #aab4c4;
+    --border: #2b374c;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: background 0.25s, color 0.25s;
+}
+
+/* HEADER */
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 6%;
+}
+
+.nav {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: var(--blue);
+}
+
+#theme {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* HERO */
+
+.hero {
+    text-align: center;
+    padding: 60px 20px 35px;
+}
+
+.hero-icon {
+    font-size: 58px;
+    margin-bottom: 10px;
+}
+
+.hero h1 {
+    font-size: 45px;
+    margin-bottom: 12px;
+}
+
+.hero h1 span {
+    color: var(--blue);
+}
+
+.hero p {
+    color: var(--muted);
+    font-size: 17px;
+}
+
+/* CONTAINER */
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* SELECTORS */
+
+.select-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.select-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px;
+}
+
+.select-card h2 {
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    outline: none;
+}
+
+/* BUTTON */
+
+.compare-button {
+    display: block;
+    margin: 10px auto 40px;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 12px;
+    background: var(--blue);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.compare-button:hover {
+    opacity: 0.9;
+}
+
+/* RESULT */
+
+#result {
+    display: none;
+}
+
+.country-heads {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.country-head {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 25px;
+    text-align: center;
+}
+
+.country-head img {
+    width: 90px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 7px;
+    margin-bottom: 12px;
+}
+
+.country-head h2 {
+    font-size: 24px;
+}
+
+/* COMPARISON */
+
+.comparison-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.comparison-row {
+    display: grid;
+    grid-template-columns: 1fr 180px 1fr;
+    align-items: center;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.comparison-row:last-child {
+    border-bottom: none;
+}
+
+.value {
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.value.right {
+    text-align: right;
+}
+
+.label {
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* WINNER */
+
+.winner {
+    color: var(--blue);
+}
+
+/* CREATOR BADGE */
+
+.creator-container {
+    text-align: center;
+    padding: 25px 20px;
+}
+
+.creator-badge {
+    display: inline-block;
+    padding: 12px 22px;
+    border-radius: 50px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+
+.creator-badge strong {
+    color: var(--blue);
+}
+
+/* FOOTER */
+
+footer {
+    margin-top: 30px;
+    background: var(--footer);
+    color: #d1d5db;
+    text-align: center;
+    padding: 30px 20px;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    nav {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: 35px;
+    }
+
+    .select-area,
+    .country-heads {
+        grid-template-columns: 1fr;
+    }
+
+    .comparison-row {
+        grid-template-columns: 1fr 100px 1fr;
+        font-size: 13px;
+    }
+
+    .value {
+        font-size: 14px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="nav">
+
+<a href="index.html" class="logo">
+🌍 WorldPulse
+</a>
+
+<nav>
+<a href="index.html">🏠 Home</a>
+<a href="world.html">🌎 World</a>
+<a href="countries.html">🌐 Countries</a>
+<a href="compare.html">⚖️ Compare</a>
+</nav>
+
+<button id="theme">🌙</button>
+
+</div>
+
+</header>
+
+
+<section class="hero">
+
+<div class="hero-icon">⚖️</div>
+
+<h1>Compare <span>Countries</span></h1>
+
+<p>
+Select any two countries and compare important information.
+</p>
+
+</section>
+
+
+<div class="container">
+
+<div class="select-area">
+
+<div class="select-card">
+
+<h2>🇦 Country 1</h2>
+
+<select id="country1">
+<option value="">Loading countries...</option>
+</select>
+
+</div>
+
+
+<div class="select-card">
+
+<h2>🇧 Country 2</h2>
+
+<select id="country2">
+<option value="">Loading countries...</option>
+</select>
+
+</div>
+
+</div>
+
+
+<button class="compare-button" onclick="compareCountries()">
+⚖️ Compare Countries
+</button>
+
+
+<div id="result">
+
+<div class="country-heads">
+
+<div class="country-head" id="head1"></div>
+
+<div class="country-head" id="head2"></div>
+
+</div>
+
+
+<div class="comparison-card" id="comparison"></div>
+
+</div>
+
+</div>
+
+
+<div class="creator-container">
+
+<div class="creator-badge">
+✨ This website is created by <strong>Ayan Kumar</strong>
+</div>
+
+</div>
+
+
+<footer>
+
+<strong>🌍 WorldPulse</strong>
+
+<br>
+
+Compare countries and explore the world.
+
+<br><br>
+
+© 2026 WorldPulse
+
+</footer>
+
+
+<script>
+
+/* DARK MODE */
+
+const themeButton = document.getElementById("theme");
+
+if (localStorage.getItem("worldpulse-theme") === "dark") {
+
+    document.body.classList.add("dark");
+    themeButton.textContent = "☀️";
+
+}
+
+themeButton.onclick = function () {
+
+    document.body.classList.toggle("dark");
+
+    const dark =
+        document.body.classList.contains("dark");
+
+    localStorage.setItem(
+        "worldpulse-theme",
+        dark ? "dark" : "light"
+    );
+
+    themeButton.textContent =
+        dark ? "☀️" : "🌙";
+
+};
+
+
+/* COUNTRY DATA */
+
+let allCountries = [];
+
+
+/* LOAD COUNTRIES */
+
+async function loadCountries() {
+
+    try {
+
+        const response = await fetch(
+            "https://restcountries.com/v3.1/all?fields=name,cca3,capital,region,subregion,population,area,flags,currencies,languages"
+        );
+
+        allCountries = await response.json();
+
+        allCountries.sort(
+            (a, b) =>
+            a.name.common.localeCompare(
+                b.name.common
+            )
+        );
+
+        const select1 =
+            document.getElementById("country1");
+
+        const select2 =
+            document.getElementById("country2");
+
+        select1.innerHTML =
+            '<option value="">Select a country</option>';
+
+        select2.innerHTML =
+            '<option value="">Select a country</option>';
+
+
+        allCountries.forEach(country => {
+
+            const option1 =
+                document.createElement("option");
+
+            option1.value =
+                country.cca3;
+
+            option1.textContent =
+                country.name.common;
+
+
+            const option2 =
+                option1.cloneNode(true);
+
+
+            select1.appendChild(option1);
+
+            select2.appendChild(option2);
+
+        });
+
+
+        /* Default countries */
+
+        select1.value = "IND";
+        select2.value = "CHN";
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        document.getElementById("country1").innerHTML =
+            '<option>Could not load countries</option>';
+
+        document.getElementById("country2").innerHTML =
+            '<option>Could not load countries</option>';
+
+    }
+
+}
+
+
+/* COMPARE */
+
+function compareCountries() {
+
+    const code1 =
+        document.getElementById("country1").value;
+
+    const code2 =
+        document.getElementById("country2").value;
+
+
+    if (!code1 || !code2) {
+
+        alert(
+            "Please select two countries."
+        );
+
+        return;
+
+    }
+
+
+    if (code1 === code2) {
+
+        alert(
+            "Please select two different countries."
+        );
+
+        return;
+
+    }
+
+
+    const country1 =
+        allCountries.find(
+            country =>
+            country.cca3 === code1
+        );
+
+    const country2 =
+        allCountries.find(
+            country =>
+            country.cca3 === code2
+        );
+
+
+    document.getElementById("head1").innerHTML = `
+
+        <img src="${country1.flags.svg}"
+        alt="${country1.name.common} flag">
+
+        <h2>
+        ${country1.name.common}
+        </h2>
+
+    `;
+
+
+    document.getElementById("head2").innerHTML = `
+
+        <img src="${country2.flags.svg}"
+        alt="${country2.name.common} flag">
+
+        <h2>
+        ${country2.name.common}
+        </h2>
+
+    `;
+
+
+    const rows = [
+
+        {
+            label: "👥 Population",
+
+            value1:
+                country1.population,
+
+            value2:
+                country2.population,
+
+            display1:
+                country1.population.toLocaleString(),
+
+            display2:
+                country2.population.toLocaleString()
+
+        },
+
+        {
+            label: "📏 Area",
+
+            value1:
+                country1.area,
+
+            value2:
+                country2.area,
+
+            display1:
+                country1.area.toLocaleString() + " km²",
+
+            display2:
+                country2.area.toLocaleString() + " km²"
+
+        },
+
+        {
+            label: "🏙️ Capital",
+
+            value1: null,
+
+            value2: null,
+
+            display1:
+                country1.capital
+                ? country1.capital.join(", ")
+                : "N/A",
+
+            display2:
+                country2.capital
+                ? country2.capital.join(", ")
+                : "N/A"
+
+        },
+
+        {
+            label: "🌍 Region",
+
+            value1: null,
+
+            value2: null,
+
+            display1:
+                country1.region || "N/A",
+
+            display2:
+                country2.region || "N/A"
+
+        },
+
+        {
+            label: "📍 Subregion",
+
+            value1: null,
+
+            value2: null,
+
+            display1:
+                country1.subregion || "N/A",
+
+            display2:
+                country2.subregion || "N/A"
+
+        },
+
+        {
+            label: "💰 Currency",
+
+            value1: null,
+
+            value2: null,
+
+            display1:
+                getCurrencies(country1),
+
+            display2:
+                getCurrencies(country2)
+
+        },
+
+        {
+            label: "🗣️ Languages",
+
+            value1: null,
+
+            value2: null,
+
+            display1:
+                getLanguages(country1),
+
+            display2:
+                getLanguages(country2)
+
+        }
+
+    ];
+
+
+    const comparison =
+        document.getElementById("comparison");
+
+    comparison.innerHTML = "";
+
+
+    rows.forEach(row => {
+
+        const div =
+            document.createElement("div");
+
+        div.className =
+            "comparison-row";
+
+
+        let class1 = "";
+        let class2 = "";
+
+
+        if (
+            row.value1 !== null &&
+            row.value2 !== null
+        ) {
+
+            if (row.value1 > row.value2) {
+
+                class1 = "winner";
+
+            }
+
+            else if (row.value2 > row.value1) {
+
+                class2 = "winner";
+
+            }
+
+        }
+
+
+        div.innerHTML = `
+
+            <div class="value ${class1}">
+                ${row.display1}
+            </div>
+
+            <div class="label">
+                ${row.label}
+            </div>
+
+            <div class="value right ${class2}">
+                ${row.display2}
+            </div>
+
+        `;
+
+
+        comparison.appendChild(div);
+
+    });
+
+
+    document.getElementById("result")
+        .style.display = "block";
+
+
+    document.getElementById("result")
+        .scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+}
+
+
+/* CURRENCIES */
+
+function getCurrencies(country) {
+
+    if (!country.currencies) {
+        return "N/A";
+    }
+
+    return Object.values(country.currencies)
+        .map(currency => currency.name)
+        .join(", ");
+
+}
+
+
+/* LANGUAGES */
+
+function getLanguages(country) {
+
+    if (!country.languages) {
+        return "N/A";
+    }
+
+    return Object.values(country.languages)
+        .join(", ");
+
+}
+
+
+/* START */
+
+loadCountries();
+
+</script>
+
+</body>
+</html>
